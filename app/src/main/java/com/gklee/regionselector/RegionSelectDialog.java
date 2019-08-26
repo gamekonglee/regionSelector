@@ -158,94 +158,114 @@ public  class RegionSelectDialog  {
         lv_province.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
-
-                if(mProvinDataListenr!=null){
-                    cityList = mProvinDataListenr.setOnProvinceSelected(proince.get(position));
-                    if(cityList==null||cityList.size()==0){
-                        Toast.makeText(mContext,"没有获取到该省份的城市数据",Toast.LENGTH_LONG);
-                        return;
-                    }
-                    mContext.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            tv_province.setText(proince.get(position).getName());
-                            tv_province.setEnabled(true);
-                            tv_city.setVisibility(View.VISIBLE);
-                            tv_province.setTextColor(mContext.getResources().getColor(R.color.region_black));
-                            tv_city.setTextColor(mContext.getResources().getColor(R.color.theme_red));
-                            tv_zone_dialog.setTextColor(mContext.getResources().getColor(R.color.region_black));
-                            tv_area.setTextColor(mContext.getResources().getColor(R.color.region_black));
+                new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+                        if(mProvinDataListenr!=null){
+                            cityList = mProvinDataListenr.setOnProvinceSelected(proince.get(position));
+                            mContext.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(cityList==null||cityList.size()==0){
+                                        Toast.makeText(mContext,"没有获取到该省份的城市数据",Toast.LENGTH_LONG);
+                                        return;
+                                    }
+                                    tv_province.setText(proince.get(position).getName());
+                                    tv_province.setEnabled(true);
+                                    tv_city.setVisibility(View.VISIBLE);
+                                    tv_province.setTextColor(mContext.getResources().getColor(R.color.region_black));
+                                    tv_city.setTextColor(mContext.getResources().getColor(R.color.theme_red));
+                                    tv_zone_dialog.setTextColor(mContext.getResources().getColor(R.color.region_black));
+                                    tv_area.setTextColor(mContext.getResources().getColor(R.color.region_black));
 //                                            setCityAdapter();
-                            cityAdapter.replaceAll(cityList);
-                            lv_province.setVisibility(View.GONE);
-                            lv_zone.setVisibility(View.GONE);
-                            lv_area.setVisibility(View.GONE);
-                            lv_city.setVisibility(View.VISIBLE);
-                            lv_city.setAdapter(cityAdapter);
+                                    cityAdapter.replaceAll(cityList);
+                                    lv_province.setVisibility(View.GONE);
+                                    lv_zone.setVisibility(View.GONE);
+                                    lv_area.setVisibility(View.GONE);
+                                    lv_city.setVisibility(View.VISIBLE);
+                                    lv_city.setAdapter(cityAdapter);
+                                }
+                            });
                         }
-                    });
-                }
+                    }
+                }.start();
+
             }
         });
         lv_city.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
-                if(mProvinDataListenr!=null){
-                    zoneList = mProvinDataListenr.setOnCitySelected(cityList.get(position));
-                    if(zoneList==null||zoneList.size()==0){
-                        Toast.makeText(mContext,"没有获取到该城市的区域数据",Toast.LENGTH_LONG);
-                        return;
-                    }
+                new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+                        if(mProvinDataListenr!=null){
+                            zoneList = mProvinDataListenr.setOnCitySelected(cityList.get(position));
 //                    mCity=cityList.get(position).getId();
-                    mContext.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            zoneAdapter.replaceAll(zoneList);
-                            tv_city.setText(cityList.get(position).getName());
-                            tv_city.setTextColor(mContext.getResources().getColor(R.color.region_black));
-                            tv_province.setTextColor(mContext.getResources().getColor(R.color.region_black));
-                            tv_area.setTextColor(mContext.getResources().getColor(R.color.region_black));
-                            tv_zone_dialog.setTextColor(mContext.getResources().getColor(R.color.theme_red));
-                            tv_zone_dialog.setVisibility(View.VISIBLE);
-                            tv_city.setEnabled(true);
-                            lv_province.setVisibility(View.GONE);
-                            lv_zone.setVisibility(View.VISIBLE);
-                            lv_city.setVisibility(View.GONE);
-                            lv_area.setVisibility(View.GONE);
+                            mContext.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(zoneList==null||zoneList.size()==0){
+                                        Toast.makeText(mContext,"没有获取到该城市的区域数据",Toast.LENGTH_LONG);
+                                        return;
+                                    }
+                                    zoneAdapter.replaceAll(zoneList);
+                                    tv_city.setText(cityList.get(position).getName());
+                                    tv_city.setTextColor(mContext.getResources().getColor(R.color.region_black));
+                                    tv_province.setTextColor(mContext.getResources().getColor(R.color.region_black));
+                                    tv_area.setTextColor(mContext.getResources().getColor(R.color.region_black));
+                                    tv_zone_dialog.setTextColor(mContext.getResources().getColor(R.color.theme_red));
+                                    tv_zone_dialog.setVisibility(View.VISIBLE);
+                                    tv_city.setEnabled(true);
+                                    lv_province.setVisibility(View.GONE);
+                                    lv_zone.setVisibility(View.VISIBLE);
+                                    lv_city.setVisibility(View.GONE);
+                                    lv_area.setVisibility(View.GONE);
+                                }
+                            });
                         }
-                    });
-                }
+                    }
+                }.start();
+
             }
         });
         lv_zone.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
-                if(mProvinDataListenr!=null){
-                    areaList = mProvinDataListenr.setOnZoneSelected(zoneList.get(position));
-                    mContext.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(areaList==null||areaList.size()==0||!isFour){
-                                dialog.dismiss();
-                                return;
-                            }
-                            tv_zone_dialog.setText(zoneList.get(position).getName());
-                            tv_zone_dialog.setTextColor(mContext.getResources().getColor(R.color.region_black));
-                            tv_province.setTextColor(mContext.getResources().getColor(R.color.region_black));
-                            tv_area.setTextColor(mContext.getResources().getColor(R.color.region_black));
-                            tv_area.setTextColor(mContext.getResources().getColor(R.color.theme_red));
-                            if(isFour){
-                                tv_area.setVisibility(View.VISIBLE);
-                            }
-                            tv_zone_dialog.setEnabled(true);
-                            lv_province.setVisibility(View.GONE);
-                            lv_zone.setVisibility(View.GONE);
-                            lv_city.setVisibility(View.GONE);
-                            lv_area.setVisibility(View.VISIBLE);
-                            areaAdapter.replaceAll(areaList);
+                new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+                        if(mProvinDataListenr!=null){
+                            areaList = mProvinDataListenr.setOnZoneSelected(zoneList.get(position));
+                            mContext.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(areaList==null||areaList.size()==0||!isFour){
+                                        dialog.dismiss();
+                                        return;
+                                    }
+                                    tv_zone_dialog.setText(zoneList.get(position).getName());
+                                    tv_zone_dialog.setTextColor(mContext.getResources().getColor(R.color.region_black));
+                                    tv_province.setTextColor(mContext.getResources().getColor(R.color.region_black));
+                                    tv_area.setTextColor(mContext.getResources().getColor(R.color.region_black));
+                                    tv_area.setTextColor(mContext.getResources().getColor(R.color.theme_red));
+                                    if(isFour){
+                                        tv_area.setVisibility(View.VISIBLE);
+                                    }
+                                    tv_zone_dialog.setEnabled(true);
+                                    lv_province.setVisibility(View.GONE);
+                                    lv_zone.setVisibility(View.GONE);
+                                    lv_city.setVisibility(View.GONE);
+                                    lv_area.setVisibility(View.VISIBLE);
+                                    areaAdapter.replaceAll(areaList);
+                                }
+                            });
                         }
-                    });
-                }
+                    }
+                }.start();
+
             }
         });
         lv_area.setOnItemClickListener(new AdapterView.OnItemClickListener() {
